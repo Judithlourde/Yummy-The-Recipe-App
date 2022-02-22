@@ -6,9 +6,9 @@
 	--font-family: 'Source Code Pro', monospace;
 
 	/* colors */
-	--primary: #000;
-	--secondary: #E3E3E3;
-	--highlight: #8E05C2;
+	--header: #9DE3D0;
+	--footer: #222222;
+	--background: #FDF5F5;
 
 	/* Margin */
 	--outside-margin: 0px 20px;
