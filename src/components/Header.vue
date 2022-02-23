@@ -15,14 +15,14 @@
         padding: 0 var(--top-small) 0 var(--top-small);
         background-color: var(--header);
         box-shadow: 0 0 5px 0;
-        height: 80px;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        /* position: fixed;
+        position: fixed;
         top: 0;
-        left: 0; */
+        left: 0;
+        z-index: 300;
     }
 
     .header__logo {
@@ -30,6 +30,6 @@
     }
 
     .header__logo img {
-        /* width: 18%; */
+        /* width: 120px; */
     }
 </style>
