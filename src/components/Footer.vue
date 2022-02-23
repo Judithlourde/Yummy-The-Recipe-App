@@ -16,11 +16,8 @@
     .footer {
         padding: 0 var(--top-small) 0 var(--top-small);
         background-color: var(--footer);
-        position: relative;
-        top: 80%;
+        position: fixed;
         bottom: 0;
-        left: 0;
-        height: 80px;
         width: 100%;
         display: flex;
         justify-content: space-between;
@@ -29,8 +26,6 @@
 
     .footer__social-icons {
         display: flex;
-        /* justify-content: space-around; */
-        /* align-items: center; */
     }
 
     .footer__social-icons img {
