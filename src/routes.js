@@ -1,5 +1,5 @@
-import HomeView from './views/HomeView.vue';
+import Home from './views/Home.vue';
 
 export default [
-	{ name: 'home', path: '/', component: HomeView }
+	{ name: 'home', path: '/', component: Home }
 ];
