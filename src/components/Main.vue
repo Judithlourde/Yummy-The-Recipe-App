@@ -2,7 +2,7 @@
     <main class="main">
         <div class="background-image-container">
             <div class="background-image-container__search">
-                <input class="" type="text" placeholder="Search" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">
+                <input class="" type="text" placeholder="Search by main ingredience" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">
 
                 <button @click="fetchMenu(); toggleIntro();">
                     <img src="/images/svg/search.svg" alt="search-icon">
@@ -13,7 +13,7 @@
         <div class="recipe-container"> 
             <div class="recipe-container__intro" :class="{introVisible: !isIntroVisible}">
                 <h3>Dinner Ideas.....</h3>
-                <p>Busy week? We can help!You can search and pick for delicious meal - including recipes.</p>
+                <p>Busy week? We can help!You can search and pick for delicious meal - including recipes and ingredience.</p>
             </div>
 
             <div class="recipe-container__recipes">
@@ -21,14 +21,31 @@
                     v-for="menu in menus"
                     :menu="menu"
                     :key="menu.id"
+                    @get-recipe-instruction="getInstruction"
+                    @get-recipe="toggleRecipe"
                 />
             </div>
 
-            <!-- <div class="overlay">
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos neque, unde cum et ex veritatis illo repellat incidunt repellendus? Dolore vitae tempora quae, inventore odio est cum eligendi. Facere, minima.
-                </p>
-            </div> -->
+            <div class="recipe-container__instructions" v-for="recipeInstruction in recipeInstructions" :key="recipeInstruction.id" :class="{instructions: isRecipeIntro}">
+                <div class="instructions__image">
+                    <img :src="recipeInstruction.strMealThumb" alt="recipe-image">
+
+                    <h4>{{ recipeInstruction.strMeal }}</h4>
+
+                    <button @click="toggleRecipe">
+                        <img src="/images/svg/close.svg" alt="close-icon">
+                    </button>
+                </div>
+                
+                <div>
+                    <h4>Ingredience</h4>
+                    <p>{{ recipeInstruction.strIngredient5 }}</p>
+                </div>
+
+                <p>{{ recipeInstruction.strInstructions }}</p>
+        
+                <a :href="recipeInstruction.strYoutube">Youtube Link</a>
+            </div>
             
         </div>
     </main>
@@ -44,9 +61,11 @@ import Menu from '../components/Menu.vue'
         data() {
             return {
                 isIntroVisible: true,
+                isRecipeIntro: false,
                 mainIngredient: '',
                 mealId: '',
                 menus: [],
+                recipeInstructions: [],
             }
         },
 
@@ -62,8 +81,6 @@ import Menu from '../components/Menu.vue'
                     const responseMenu = await fetch(recipeUrl);
                     const {meals} = await responseMenu.json();
                     this.menus = meals;
-                    console.log(this.menus);
-                    console.log(meals);
                     this.mealId = meals[0].idMeal;
                     this.fetchMeal();
 
@@ -72,22 +89,18 @@ import Menu from '../components/Menu.vue'
                 }
             },
 
-            // async fetchMeal() {
-            //     const ingredienceUrl = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${this.mealId}`;
-
-            //     try {
-            //         const responseDescription = await fetch(ingredienceUrl);
-            //         const {meals} = await responseDescription.json();
-            //         console.log(meals[0].strInstructions);
-
-            //     } catch(error) {
-            //         return 'error';
-            //     }
-            // },
-
             toggleIntro() {
                 this.isIntroVisible = false;
-            }
+            },
+
+            getInstruction(recipe) {
+                this.recipeInstructions = recipe;
+                this.toggleRecipe();
+            },
+
+            toggleRecipe() {
+                this.isRecipeIntro = !this.isRecipeIntro;
+            },
         }
         
     }
@@ -127,45 +140,63 @@ import Menu from '../components/Menu.vue'
     .background-image-container__search input {
         outline: none;
         border: none;
+        width: 100%;
     }
 
     .recipe-container {
         grid-column: 1/ span 12;
         height: 100%;
+        width: 100%;
         position: relative;
     }
 
-    .overlay {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;  
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.6);
-        color: white;
-        opacity: 0;
-        transition: opacity 0.75s; 
-        transform: translateY(20px);
-        transition: transform 0.75s;
-        
-        transform: translateY(0px);
-        font-size: 34px;
-    }
-
-    .overlay:hover > * {
-        opacity: 1;
+    .recipe-container__instructions {
+        display: none;
+        /* position: absolute; */
+        /* transform: translateY(-150%); */
+        transition: all .3s cubic-bezier(.23,1,.32,1); 
     }
 
     .recipe-container__recipes {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         overflow: scroll;
         margin: 20px;
+    }
+
+    .instructions {
+        transform: translateY(0);
+        transition: all .3s cubic-bezier(.23,1,.32,1);
+        display: block;
+        position: fixed;
+        top: 80px;
+        left: 700px;
+        right: 60px;
+        bottom: 50px;
+        background: var(--background);
+        padding: 40px;
+        text-align: center;
+        overflow-x: scroll;
+    }
+
+    .instructions__image {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .instructions__image img {
+        width: 100px;
+        object-fit: cover;
+    }
+
+    .instructions div button img {
+        width: 30px;
+    }
+
+    .recipe-container__intro {
+    
     }
 
     .recipe-container h3 {
