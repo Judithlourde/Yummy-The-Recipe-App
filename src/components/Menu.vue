@@ -2,9 +2,12 @@
     <div class="menu">
         <h3>{{ menu.strMeal }}</h3>
         <img :src="menu.strMealThumb" alt="menu-image">
-        <button @click="fetchMeal" class="menu__recipe-button">Get Recipe</button>
-        <p>{{ mealInstroction }}</p>
+        <button @click="fetchMeal(); emitRecipe(); emitRecipeIntro();" class="menu__recipe-button">Get Recipe</button>
     </div>
+
+    <!-- <div class="menu-instruction">
+        <p>{{ mealInstroction }}</p>
+    </div> -->
 </template>
 
 <script>
@@ -15,7 +18,8 @@ export default {
 
     data() {
         return {
-            mealInstroction: '',
+            mealRecipe: '',
+            meal: [],
         }
         
     },
@@ -27,12 +31,24 @@ export default {
             try {
                 const responseDescription = await fetch(ingredienceUrl);
                 const {meals} = await responseDescription.json();
-                this.mealInstroction = (meals[0].strInstructions);
+                console.log(meals);
+                this.meal = meals;
+                // this.mealRecipe = (meals[0].strInstructions);
+                this.emitRecipe(this.meal);               // Calling the emit function and sending the recipe-Instruction in paramenter to emit 
 
             } catch(error) {
                 return 'error';
             }
         },
+
+        emitRecipe() {
+            this.$emit('get-recipe-instruction', this.meal);
+            console.log(this.meal);
+        },
+
+        emitRecipeIntro() {
+            this.$emit('get-recipe', this.meal)
+        }
     }
 }
 </script>
@@ -40,16 +56,16 @@ export default {
 <style>
     .menu {
         position: relative;
-        /* display: flex; */
-        /* width: 100%;
-        height: 100%; */
-        /* background-repeat: none; 
-        background-position: center;
-        background-size: cover; */
     }
 
-    .menu h3 {
+    .menu button {
         position: absolute;
-        /* background-color: var(--background); */
+        top: 88%;
+        left: 30%;
+        display: flex;
+        padding: 10px;
+        border-radius: 20px;
+        align-content: center;
+        background-color: var(--header);
     }
 </style>
