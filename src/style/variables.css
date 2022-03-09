@@ -1,9 +1,11 @@
 :root {
+	/* font-family */
+	--font-family: 'Roboto', sans-serif;
+
 	/* font-size */
 	--heading: 1.6rem;
 	--body: 1rem;
 	--caption: 0.66rem;
-	--font-family: 'Source Code Pro', monospace;
 
 	/* colors */
 	--header: #9DE3D0;
