@@ -9,15 +9,21 @@
                 </button>
             </div> 
         </div>
-
+        
         <div class="recipe-container"> 
             <div class="recipe-container__intro" :class="{introVisible: !isIntroVisible}">
                 <h3>Dinner Ideas.....</h3>
-                <p>Busy week? We can help!You can search and pick for delicious meal - including recipes and ingredience.</p>
+                <p>Busy week? </p>
+                <p>We can help!</p>
+                <p>You can search and pick for delicious meal - including recipes and ingredience.</p>
+                
             </div>
 
+            <p>{{ meassage }}</p>
+            <p>{{ error }}</p>
+
             <div class="recipe-container__recipes">
-                <Menu 
+                <Menu
                     v-for="menu in menus"
                     :menu="menu"
                     :key="menu.id"
@@ -66,6 +72,8 @@ import Menu from '../components/Menu.vue'
                 mealId: '',
                 menus: [],
                 recipeInstructions: [],
+                error: '',
+                message: '',
             }
         },
 
@@ -76,16 +84,43 @@ import Menu from '../components/Menu.vue'
         methods: {
             async fetchMenu() {
                 const recipeUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${this.mainIngredient}`;
-                
+                const responseMenu = await fetch(recipeUrl);
+
                 try {
-                    const responseMenu = await fetch(recipeUrl);
+                    await this.handleResponse(responseMenu);
+            
+                } catch(error) {
+                    this.error = error.message;
+                }
+            },
+
+            async handleResponse(responseMenu) {
+                if(responseMenu.status >= 200 && responseMenu.status < 300) {
+                    console.log(responseMenu);
                     const {meals} = await responseMenu.json();
                     this.menus = meals;
+                    if(meals === null) {
+                        this.meassage = 'Unauthorized';
+                    }
+                    console.log(meals);
                     this.mealId = meals[0].idMeal;
-                    this.fetchMeal();
-
-                } catch(error) {
-                    return 'error';
+                    // this.fetchMeal();
+                    
+                } else {
+                    if(responseMenu.status === 404) {
+                        console.log('Sorry, Page could not be found. Please write the correct place.');
+                        throw new Error('Sorry, Weather could not be found. Please write the correct place.');
+                    }
+                    if(responseMenu.status === 401) {
+                        console.log('Unauthorized');
+                        throw new Error('Unauthorized');
+                    }
+                    if(responseMenu.status > 500) {
+                        console.log('Servor Error!');
+                        throw new Error('Servor Error!');
+                    }
+                    console.log('Something went wrong!');
+                    throw new Error('Something went wrong!');
                 }
             },
 
@@ -196,7 +231,12 @@ import Menu from '../components/Menu.vue'
     }
 
     .recipe-container__intro {
-    
+        /* width: 500px; */
+        line-height: 2;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
     .recipe-container h3 {
