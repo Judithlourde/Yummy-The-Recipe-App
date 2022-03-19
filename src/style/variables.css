@@ -1,6 +1,6 @@
 :root {
 	/* font-family */
-	--font-family: 'Roboto', sans-serif;
+	--font-family: 'Source Serif 4', sans-serif;
 
 	/* font-size */
 	--heading: 1.6rem;
@@ -8,7 +8,7 @@
 	--caption: 0.66rem;
 
 	/* colors */
-	--header: #9DE3D0;
+	--header: rgb(2, 58, 21);
 	--footer: #222222;
 	--background: #FDF5F5;
 
