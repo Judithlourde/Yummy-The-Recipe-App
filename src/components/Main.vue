@@ -2,11 +2,11 @@
     <main class="main">
         <div class="background-image-container">
             <div class="background-image-container__search">
-                <input class="" type="text" placeholder="Search by main ingredience" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">
-
                 <button @click="fetchMenu(); toggleIntro();">
                     <img src="/images/svg/search.svg" alt="search-icon">
                 </button>
+
+                <input class="" type="text" placeholder="Search by main ingredience" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">   
             </div> 
         </div>
         
@@ -83,6 +83,7 @@ import Menu from '../components/Menu.vue'
 
         methods: {
             async fetchMenu() {
+                
                 const recipeUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${this.mainIngredient}`;
                 const responseMenu = await fetch(recipeUrl);
 
@@ -136,20 +137,19 @@ import Menu from '../components/Menu.vue'
             toggleRecipe() {
                 this.isRecipeIntro = !this.isRecipeIntro;
             },
-        }
-        
+        }   
     }
 </script>
 
 <style>
     .main {
         padding-top: 4rem;
-        padding-bottom: 4rem;
+        /* padding-bottom: 4rem; */
         display: flex;
         flex-direction: column;
         overflow: scroll; 
-        width: 100%;
-        height: 100%;
+        width: 100vw;
+        height: 100vh;
     }
 
     .background-image-container {
@@ -167,7 +167,7 @@ import Menu from '../components/Menu.vue'
         justify-content: space-between;
         align-items: center;
         padding: var(--padding-small);
-        margin: 40px;
+        margin: 40px 80px;
         background-color: var(--background);
         border-radius: 20px; 
     }
@@ -187,7 +187,7 @@ import Menu from '../components/Menu.vue'
 
     .recipe-container__instructions {
         display: none;
-        /* position: absolute; */
+        position: absolute;
         /* transform: translateY(-150%); */
         transition: all .3s cubic-bezier(.23,1,.32,1); 
     }
@@ -196,23 +196,23 @@ import Menu from '../components/Menu.vue'
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-        overflow: scroll;
+        /* overflow: scroll; */
         margin: 20px;
     }
 
     .instructions {
+        overflow: scroll;
         transform: translateY(0);
         transition: all .3s cubic-bezier(.23,1,.32,1);
         display: block;
         position: fixed;
-        top: 80px;
-        left: 700px;
-        right: 60px;
+        top: 200px; 
         bottom: 50px;
         background: var(--background);
         padding: 40px;
         text-align: center;
         overflow-x: scroll;
+        line-height: 1.5;
     }
 
     .instructions__image {
@@ -245,7 +245,7 @@ import Menu from '../components/Menu.vue'
 
     .introVisible {
         position: absolute;
-        transform: translateY(-130%);
+        transform: translateY(-160%);
         transition: all .3s cubic-bezier(.23,1,.32,1); 
     }
 
@@ -266,5 +266,10 @@ import Menu from '../components/Menu.vue'
             margin: 20px;
         }
 
+        .instructions {
+            top: 50px;
+            left: 700px;
+            /* right: 0px; */
+        }
     }
 </style>
