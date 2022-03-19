@@ -79,12 +79,12 @@ export default {
 
     .menu button {
         position: absolute;
-        top: 88%;
+        top: 85%;
         left: 30%;
         display: flex;
         padding: 10px;
         border-radius: 20px;
         align-content: center;
-        background-color: var(--header);
+        background-color: var(--background);
     }
 </style>
