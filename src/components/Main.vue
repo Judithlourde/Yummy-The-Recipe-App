@@ -15,7 +15,7 @@
                 <h3>Dinner Ideas.....</h3>
                 <p>Busy week? </p>
                 <p>We can help!</p>
-                <p>You can search and pick for delicious meal - including recipes and ingredience.</p>
+                <p>You can search by the main ingredience and pick for delicious meal - including recipes and ingredience.</p>
                 
             </div>
 
@@ -42,10 +42,35 @@
                         <img src="/images/svg/close.svg" alt="close-icon">
                     </button>
                 </div>
-                
-                <div>
-                    <h4>Ingredience</h4>
-                    <p>{{ recipeInstruction.strIngredient5 }}</p>
+
+                <h3>Ingredients</h3>
+
+                <div class="instructions__ingredients">
+                    <ul> 
+                        <li v-if="recipeInstruction.strIngredient1 !== '' ">{{ recipeInstruction.strMeasure1 }}{{ recipeInstruction.strIngredient1 }}</li>
+                        <li v-if="recipeInstruction.strIngredient2 !== '' ">{{ recipeInstruction.strMeasure2 }}{{ recipeInstruction.strIngredient2 }}</li>
+                        <li v-if="recipeInstruction.strIngredient3 !== '' ">{{ recipeInstruction.strMeasure3 }}{{ recipeInstruction.strIngredient3 }}</li>
+                        <li v-if="recipeInstruction.strIngredient4 !== '' ">{{ recipeInstruction.strMeasure4 }}{{ recipeInstruction.strIngredient4 }}</li>
+                        <li v-if="recipeInstruction.strIngredient5 !== '' ">{{ recipeInstruction.strMeasure5 }}{{ recipeInstruction.strIngredient5 }}</li>
+                        <li v-if="recipeInstruction.strIngredient6 !== '' " >{{ recipeInstruction.strMeasure6 }}{{ recipeInstruction.strIngredient6 }}</li>
+                        <li v-if="recipeInstruction.strIngredient7 !== '' " >{{ recipeInstruction.strMeasure7 }}{{ recipeInstruction.strIngredient7 }}</li>
+                        <li v-if="recipeInstruction.strIngredient8 !== '' " >{{ recipeInstruction.strMeasure8 }}{{ recipeInstruction.strIngredient8 }}</li>
+                        <li v-if="recipeInstruction.strIngredient9 !== '' " >{{ recipeInstruction.strMeasure9 }}{{ recipeInstruction.strIngredient9 }}</li>
+                        <li v-if="recipeInstruction.strIngredient10 !== '' " >{{ recipeInstruction.strMeasure10 }}{{ recipeInstruction.strIngredient10 }}</li>
+                    </ul>
+
+                    <ul>
+                        <li v-if="recipeInstruction.strIngredient11 !== '' " >{{ recipeInstruction.strMeasure11 }}{{ recipeInstruction.strIngredient11 }}</li>
+                        <li v-if="recipeInstruction.strIngredient12 !== '' " >{{ recipeInstruction.strMeasure12 }}{{ recipeInstruction.strIngredient12 }}</li>
+                        <li v-if="recipeInstruction.strIngredient13 !== '' " >{{ recipeInstruction.strMeasure13 }}{{ recipeInstruction.strIngredient13 }}</li>
+                        <li v-if="recipeInstruction.strIngredient14 !== '' " >{{ recipeInstruction.strMeasure14 }}{{ recipeInstruction.strIngredient14 }}</li>
+                        <li v-if="recipeInstruction.strIngredient15 !== '' " >{{ recipeInstruction.strMeasure15 }}{{ recipeInstruction.strIngredient15 }}</li>
+                        <li v-if="recipeInstruction.strIngredient16 !== '' " >{{ recipeInstruction.strMeasure16 }}{{ recipeInstruction.strIngredient16 }}</li>
+                        <li v-if="recipeInstruction.strIngredient17 !== '' " >{{ recipeInstruction.strMeasure17 }}{{ recipeInstruction.strIngredient17 }}</li>
+                        <li v-if="recipeInstruction.strIngredient18 !== '' " >{{ recipeInstruction.strMeasure18 }}{{ recipeInstruction.strIngredient18 }}</li>
+                        <li v-if="recipeInstruction.strIngredient19 !== '' " >{{ recipeInstruction.strMeasure19 }}{{ recipeInstruction.strIngredient19 }}</li>
+                        <li v-if="recipeInstruction.strIngredient20 !== '' " >{{ recipeInstruction.strMeasure20 }}{{ recipeInstruction.strIngredient20 }}</li>
+                    </ul>
                 </div>
 
                 <p>{{ recipeInstruction.strInstructions }}</p>
@@ -74,11 +99,14 @@ import Menu from '../components/Menu.vue'
                 recipeInstructions: [],
                 error: '',
                 message: '',
+                ingredients: [],
+                index: 1,
             }
         },
 
         created() {
             // this.fetchMenu();
+            
         },
 
         methods: {
@@ -131,58 +159,61 @@ import Menu from '../components/Menu.vue'
 
             getInstruction(recipe) {
                 this.recipeInstructions = recipe;
+                console.log(this.recipeInstructions);
                 this.toggleRecipe();
+                
             },
 
             toggleRecipe() {
                 this.isRecipeIntro = !this.isRecipeIntro;
             },
-        }   
+        },
     }
 </script>
 
 <style>
     .main {
+        width: 100vw;
+        height: 100vh;
+        overflow: scroll;
         padding-top: 4rem;
         /* padding-bottom: 4rem; */
         display: flex;
-        flex-direction: column;
-        overflow: scroll; 
-        width: 100vw;
-        height: 100vh;
+        flex-direction: column;   
     }
 
     .background-image-container {
         height: 100%;
+        position: relative;
         background-image: url('/images/fish_curry.jpg');
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
-        position: relative;
-        /* overflow: hidden; */
     }
 
     .background-image-container__search {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: var(--padding-small);
         margin: 40px 80px;
-        background-color: var(--background);
         border-radius: 20px; 
+        padding: var(--padding-small);
+        background-color: var(--background);    
     }
 
     .background-image-container__search input {
-        outline: none;
-        border: none;
         width: 100%;
+        border: none;
+        outline: none;
     }
 
     .recipe-container {
-        grid-column: 1/ span 12;
-        height: 100%;
         width: 100%;
+        height: 100%;
+        padding: var(--padding-medium);
         position: relative;
+        text-align: center;
+        grid-column: 1/ span 12;
     }
 
     .recipe-container__instructions {
@@ -201,24 +232,24 @@ import Menu from '../components/Menu.vue'
     }
 
     .instructions {
-        overflow: scroll;
-        transform: translateY(0);
-        transition: all .3s cubic-bezier(.23,1,.32,1);
         display: block;
         position: fixed;
         top: 200px; 
         bottom: 50px;
-        background: var(--background);
-        padding: 40px;
+        overflow: scroll;
+        line-height: 1.7;
         text-align: center;
         overflow-x: scroll;
-        line-height: 1.5;
+        background: var(--background);
+        padding: var(--padding-big);
+        transform: translateY(0);
+        transition: all .3s cubic-bezier(.23,1,.32,1);
     }
 
     .instructions__image {
         display: flex;
-        justify-content: space-between;
         align-items: flex-start;
+        justify-content: space-between;
     }
 
     .instructions__image img {
@@ -228,6 +259,16 @@ import Menu from '../components/Menu.vue'
 
     .instructions div button img {
         width: 30px;
+    }
+
+    .instructions__ingredients {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+    }
+
+    .instructions__ingredients ul {
+        list-style: none;
     }
 
     .recipe-container__intro {
@@ -245,8 +286,8 @@ import Menu from '../components/Menu.vue'
 
     .introVisible {
         position: absolute;
-        transform: translateY(-160%);
-        transition: all .3s cubic-bezier(.23,1,.32,1); 
+        transform: translateY(-200%);
+        transition: all .5s cubic-bezier(.23,1,.32,1); 
     }
 
     /* Medium screen devices (968px and above) */
@@ -261,14 +302,15 @@ import Menu from '../components/Menu.vue'
         }
         
         .recipe-container {
-            grid-column: 7/ span 6;
-            overflow: scroll;
             margin: 20px;
+            overflow: scroll;
+            grid-column: 7/ span 6;  
         }
 
         .instructions {
-            top: 50px;
+            top: 70px;
             left: 700px;
+            padding: var(--padding-medium)
             /* right: 0px; */
         }
     }
