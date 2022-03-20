@@ -5,10 +5,6 @@
         <img :src="menu.strMealThumb" alt="menu-image">
         <button @click="fetchMeal(); emitRecipe(); emitRecipeIntro();" class="menu__recipe-button">Get Recipe</button>
     </div>
-
-    <!-- <div class="menu-instruction">
-        <p>{{ mealInstroction }}</p>
-    </div> -->
 </template>
 
 <script>
@@ -41,7 +37,7 @@ export default {
 
         async handleResponse(responseDescription) {
             if(responseDescription.status >= 200 && responseDescription.status < 300) {
-                const {meals} = await responseDescription.json();
+                const { meals } = await responseDescription.json();
                 console.log(meals);
                 this.meal = meals;
                 // Calling the emit function and sending the recipe-Instruction in paramenter to emit 
@@ -79,12 +75,21 @@ export default {
 
     .menu button {
         position: absolute;
-        top: 85%;
-        left: 30%;
+        top: 75%;
+        left: 25%;
         display: flex;
         padding: 10px;
         border-radius: 20px;
         align-content: center;
-        background-color: var(--background);
+        background-color: var(--header);
+        color: var(--background);
+    }
+
+    /* Medium screen devices (968px and above) */
+    @media screen and (min-width: 968px) {
+        .menu button {
+            top: 85%;
+            left: 25%;
+        }
     }
 </style>
