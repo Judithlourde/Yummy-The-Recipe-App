@@ -13,22 +13,23 @@
 	--background: #FDF5F5;
 
 	/* Margin */
-	--outside-margin: 0px 20px;
-
 	--bottom-big: 100px;
 
 	--bottom-medium: 40px;
 	--top-medium: var(--bottom-medium);
+	--margin-medium: var(--bottom-medium);
 
 	--bottom-small: 20px;
 	--top-small: var(--bottom-small);
 	--left-small: var(--bottom-small);
 	--right-small: var(--bottom-small);
+	--margin-small: var(--bottom-small);
 
 	--bottom-xsmall: 10px;
 	--top-xsmall: var(--bottom-xsmall);
 	--left-xsmall: var(--bottom-xsmall);
 	--right-xsmall: var(--bottom-xsmall);
+	--margin-xsmall: var(--bottom-xsmall);
 
 	/* Padding */
 	--padding-big: 40px;
@@ -36,9 +37,6 @@
 	--padding-small: 10px;
 
 	/* grid */
-	--gap-big: 50px;
-	--gap-medium: 10px;
-	--gap-small: 5px;
 	--grid-column-12: repeat(12, 1fr);
 }
 
