@@ -6,7 +6,7 @@
                     <img src="/images/svg/search.svg" alt="search-icon">
                 </button>
 
-                <input class="" type="text" placeholder="Search by main ingredience" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">   
+                <input class="" type="text" placeholder="Search by main ingredient or just enter for random recipes" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">   
             </div> 
         </div>
         
@@ -14,21 +14,26 @@
             <div class="recipe-container__intro" :class="{introVisible: !isIntroVisible}">
                 <h3>Dinner Ideas.....</h3>
                 <p>Busy week? </p>
-                <p>We can help!</p>
-                <p>You can search by the main ingredience and pick for delicious meal - including recipes and ingredience.</p>
-                
+                <p>Yummy <span> by Mummy </span> can help!</p>
+                <p>You can search by the main ingredient for examples Salmon, Chicken, Flour, Tomato etc... and pick for delicious meal - including recipes with ingredience.</p>
+                <span>Cooking is an art, food gratifies the audience when we cook with a secret ingredient called “Love”.</span>    
             </div>
 
-            <p>{{ meassage }}</p>
-            <p>{{ error }}</p>
+            <p class="recipe-container__suggestion">{{ message }}</p>
+            <p v-if="isErrorVisible">{{ error }}</p>
+            <p>{{ recipeError }}</p>
 
             <div class="recipe-container__recipes">
+                <!-- Looping the menus array and sending the object by props to the child component (Menu) -->
+                <!-- And getting the recipe instruction from Menu component by emit -->
                 <Menu
                     v-for="menu in menus"
                     :menu="menu"
                     :key="menu.id"
-                    @get-recipe-instruction="getInstruction"
-                    @get-recipe="toggleRecipe"
+                    
+                    @get-recipe-instruction="getInstruction" 
+                    @toggle-recipe="toggleRecipe"
+                    @get-recipe-error='recipeErrorMessage'
                 />
             </div>
 
@@ -55,11 +60,11 @@
                         <li v-if="recipeInstruction.strIngredient6 !== '' " >{{ recipeInstruction.strMeasure6 }}{{ recipeInstruction.strIngredient6 }}</li>
                         <li v-if="recipeInstruction.strIngredient7 !== '' " >{{ recipeInstruction.strMeasure7 }}{{ recipeInstruction.strIngredient7 }}</li>
                         <li v-if="recipeInstruction.strIngredient8 !== '' " >{{ recipeInstruction.strMeasure8 }}{{ recipeInstruction.strIngredient8 }}</li>
-                        <li v-if="recipeInstruction.strIngredient9 !== '' " >{{ recipeInstruction.strMeasure9 }}{{ recipeInstruction.strIngredient9 }}</li>
-                        <li v-if="recipeInstruction.strIngredient10 !== '' " >{{ recipeInstruction.strMeasure10 }}{{ recipeInstruction.strIngredient10 }}</li>
                     </ul>
 
-                    <ul>
+                    <ul>    
+                        <li v-if="recipeInstruction.strIngredient9 !== '' " >{{ recipeInstruction.strMeasure9 }}{{ recipeInstruction.strIngredient9 }}</li>
+                        <li v-if="recipeInstruction.strIngredient10 !== '' " >{{ recipeInstruction.strMeasure10 }}{{ recipeInstruction.strIngredient10 }}</li>
                         <li v-if="recipeInstruction.strIngredient11 !== '' " >{{ recipeInstruction.strMeasure11 }}{{ recipeInstruction.strIngredient11 }}</li>
                         <li v-if="recipeInstruction.strIngredient12 !== '' " >{{ recipeInstruction.strMeasure12 }}{{ recipeInstruction.strIngredient12 }}</li>
                         <li v-if="recipeInstruction.strIngredient13 !== '' " >{{ recipeInstruction.strMeasure13 }}{{ recipeInstruction.strIngredient13 }}</li>
@@ -74,7 +79,6 @@
                 </div>
 
                 <p>{{ recipeInstruction.strInstructions }}</p>
-        
                 <a :href="recipeInstruction.strYoutube">Youtube Link</a>
             </div>
             
@@ -93,6 +97,7 @@ import Menu from '../components/Menu.vue'
             return {
                 isIntroVisible: true,
                 isRecipeIntro: false,
+                isErrorVisible: false,
                 mainIngredient: '',
                 mealId: '',
                 menus: [],
@@ -100,23 +105,17 @@ import Menu from '../components/Menu.vue'
                 error: '',
                 message: '',
                 ingredients: [],
-                index: 1,
+                recipeError: '',
             }
         },
 
-        created() {
-            // this.fetchMenu();
-            
-        },
-
         methods: {
+            // This function fetching the menu data with main ingredient som given by user in search bar
             async fetchMenu() {
-                
                 const recipeUrl = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${this.mainIngredient}`;
                 const responseMenu = await fetch(recipeUrl);
-
                 try {
-                    await this.handleResponse(responseMenu);
+                    await this.handleResponse(responseMenu);    
             
                 } catch(error) {
                     this.error = error.message;
@@ -125,30 +124,29 @@ import Menu from '../components/Menu.vue'
 
             async handleResponse(responseMenu) {
                 if(responseMenu.status >= 200 && responseMenu.status < 300) {
-                    console.log(responseMenu);
-                    const {meals} = await responseMenu.json();
+                    this.message = ''
+                    const { meals } = await responseMenu.json();
                     this.menus = meals;
-                    if(meals === null) {
-                        this.meassage = 'Unauthorized';
-                    }
                     console.log(meals);
-                    this.mealId = meals[0].idMeal;
+                    // If the main ingredients not found when user search still response is 200 and meals === null. Then it shows the suggestion message. 
+                    if(this.menus === null) {   
+                        this.message = `We don't have ${this.mainIngredient} in our meal. But you can find many other recepies by main ingredient. Such as Salmon, Chicken, Egg, Onion, Tomato, Flour...`;
+                    }
+                    // Setting the meal id to variable, it helps to fetch the ingredients and instructions from the other URL
+                    this.mealId = meals[0].idMeal;  
                     // this.fetchMeal();
                     
                 } else {
+                    this.errorVisible();    // Calling the toggle error function when error occured
                     if(responseMenu.status === 404) {
-                        console.log('Sorry, Page could not be found. Please write the correct place.');
-                        throw new Error('Sorry, Weather could not be found. Please write the correct place.');
+                        throw new Error('Sorry, Page could not be found');
                     }
                     if(responseMenu.status === 401) {
-                        console.log('Unauthorized');
                         throw new Error('Unauthorized');
                     }
                     if(responseMenu.status > 500) {
-                        console.log('Servor Error!');
                         throw new Error('Servor Error!');
                     }
-                    console.log('Something went wrong!');
                     throw new Error('Something went wrong!');
                 }
             },
@@ -160,13 +158,20 @@ import Menu from '../components/Menu.vue'
             getInstruction(recipe) {
                 this.recipeInstructions = recipe;
                 console.log(this.recipeInstructions);
-                this.toggleRecipe();
-                
+                this.toggleRecipe();    
             },
 
             toggleRecipe() {
                 this.isRecipeIntro = !this.isRecipeIntro;
             },
+
+            //  Need this toggle error function to visible the error message only when error occured
+            errorVisible() {
+                this.isErrorVisible = !this.isErrorVisible;
+            },
+            recipeErrorMessage(recipeError) {
+                this.recipeError = recipeError;
+            }
         },
     }
 </script>
@@ -195,8 +200,8 @@ import Menu from '../components/Menu.vue'
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin: 40px 80px;
-        border-radius: 20px; 
+        margin: 40px 70px;
+        border-radius: 25px; 
         padding: var(--padding-small);
         background-color: var(--background);    
     }
@@ -212,6 +217,7 @@ import Menu from '../components/Menu.vue'
         height: 100%;
         padding: var(--padding-medium);
         position: relative;
+        bottom: 20px;
         text-align: center;
         grid-column: 1/ span 12;
     }
@@ -223,25 +229,36 @@ import Menu from '../components/Menu.vue'
         transition: all .3s cubic-bezier(.23,1,.32,1); 
     }
 
+    .recipe-container__instructions a {
+        /* text-decoration: none; */
+        color: inherit;
+    }
+
     .recipe-container__recipes {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
         /* overflow: scroll; */
-        margin: 20px;
+        margin: 10px;
+    }
+
+    .recipe-container__suggestion {
+        padding-top: var(--top-small);
+        line-height: 2;
     }
 
     .instructions {
         display: block;
         position: fixed;
-        top: 200px; 
+        top: 60px; 
         bottom: 50px;
+        right: 0;
         overflow: scroll;
         line-height: 1.7;
         text-align: center;
         overflow-x: scroll;
         background: var(--background);
-        padding: var(--padding-big);
+        padding: var(--padding-medium);
         transform: translateY(0);
         transition: all .3s cubic-bezier(.23,1,.32,1);
     }
@@ -272,21 +289,24 @@ import Menu from '../components/Menu.vue'
     }
 
     .recipe-container__intro {
-        /* width: 500px; */
-        line-height: 2;
+        line-height: 1.7;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
 
+    .recipe-container__intro span {
+        font-style: italic;
+    }
+
     .recipe-container h3 {
-        padding: var(--padding-medium) 0;
+        padding: var(--padding-small) 0;
     }
 
     .introVisible {
         position: absolute;
-        transform: translateY(-200%);
+        transform: translateY(-240%);
         transition: all .5s cubic-bezier(.23,1,.32,1); 
     }
 
@@ -310,8 +330,12 @@ import Menu from '../components/Menu.vue'
         .instructions {
             top: 70px;
             left: 700px;
-            padding: var(--padding-medium)
-            /* right: 0px; */
+            padding: var(--padding-medium);
+        }
+
+        .recipe-container__intro {
+            width: 580px;
+            line-height: 2;
         }
     }
 </style>
