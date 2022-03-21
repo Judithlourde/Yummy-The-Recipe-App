@@ -4,25 +4,26 @@
             <img src="/images/svg/logo.svg" alt="logo-yummy">
         </div>
 
-        <div class="header__hamburger">
+        <!-- Hamburger haven't functionality -->
+        <!-- <div class="header__hamburger">
             <img src="/images/svg/hamburger.svg" alt="hamburger-icon">
-        </div>
+        </div> -->
     </header>
 </template>
 
 <style>
     .header {
-        padding: 0 var(--top-small) 0 var(--top-small);
-        background-color: var(--header);
-        box-shadow: 0 0 5px 0;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         position: fixed;
         top: 0;
         left: 0;
         z-index: 300;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 0 5px 0;
+        background-color: var(--header);
+        padding: 0 var(--padding-small) 0 var(--padding-small);
     }
 
     .header__logo {
