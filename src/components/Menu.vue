@@ -3,7 +3,7 @@
         <h5>{{ menu.error }}</h5>
         <h3>{{ menu.strMeal }}</h3>
         <img :src="menu.strMealThumb" alt="menu-image">
-        <button @click="fetchMeal(); emitRecipe(); emitRecipeIntro();" class="menu__recipe-button">Get Recipe</button>
+        <button @click="fetchMeal(); emitToggleRecipe(); emitRecipeIntro();" class="menu__recipe-button">Get Recipe</button>
     </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
         return {
             mealRecipe: '',
             meal: [],
-            // error: '',
+            recipeError: '',
         }
         
     },
@@ -30,21 +30,23 @@ export default {
 
             try {
                 await this.handleResponse(responseDescription);
+
             } catch(error) {
-                this.error = error.message;
+                this.recipeError = error.message;
+                this.emitRecipeError(this.recipeError);
             }
         },
 
         async handleResponse(responseDescription) {
             if(responseDescription.status >= 200 && responseDescription.status < 300) {
                 const { meals } = await responseDescription.json();
-                console.log(meals);
+                
                 this.meal = meals;
                 // Calling the emit function and sending the recipe-Instruction in paramenter to emit 
-                this.emitRecipe(this.meal);         
+                this.emitRecipeIntro(this.meal);         
             } else {
                 if(responseDescription.status === 404) {
-                    throw new Error('Sorry, Weather could not be found. Please write the correct place.');
+                    throw new Error('Sorry, Page could not be found');
                 }
                 if(responseDescription.status === 401) {
                     throw new Error('Unauthorized');
@@ -56,13 +58,18 @@ export default {
             }
         },
 
-        emitRecipe() {
+        // Emit recipe instruction to parent componet with meal array
+        emitRecipeIntro() {
             this.$emit('get-recipe-instruction', this.meal);
-            console.log(this.meal);
         },
 
-        emitRecipeIntro() {
-            this.$emit('get-recipe', this.meal)
+        emitToggleRecipe() {
+            this.$emit('toggle-recipe'); 
+        },
+
+        // Emit error message to the parent component with error
+        emitRecipeError(error) {
+            this.$emit('get-recipe-error', error);
         }
     }
 }
@@ -71,6 +78,8 @@ export default {
 <style>
     .menu {
         position: relative;
+        /* top: 10px; */
+        bottom: 40px;
     }
 
     .menu button {
