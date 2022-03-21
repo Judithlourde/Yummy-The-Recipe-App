@@ -217,7 +217,6 @@ import Menu from '../components/Menu.vue'
         height: 100%;
         padding: var(--padding-medium);
         position: relative;
-        bottom: 20px;
         text-align: center;
         grid-column: 1/ span 12;
     }
@@ -225,12 +224,10 @@ import Menu from '../components/Menu.vue'
     .recipe-container__instructions {
         display: none;
         position: absolute;
-        /* transform: translateY(-150%); */
         transition: all .3s cubic-bezier(.23,1,.32,1); 
     }
 
     .recipe-container__instructions a {
-        /* text-decoration: none; */
         color: inherit;
     }
 
@@ -238,7 +235,6 @@ import Menu from '../components/Menu.vue'
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
-        /* overflow: scroll; */
         margin: 10px;
     }
 
@@ -320,6 +316,13 @@ import Menu from '../components/Menu.vue'
         .background-image-container {
             grid-column: 1/ span 6;
         }
+
+        .recipe-container__suggestion {
+            position: absolute;
+            top: 230px;
+            left: 50px;
+            right: 50px;
+        }
         
         .recipe-container {
             margin: 20px;
@@ -329,7 +332,8 @@ import Menu from '../components/Menu.vue'
 
         .instructions {
             top: 70px;
-            left: 700px;
+            bottom: 0;
+            left: 650px;
             padding: var(--padding-medium);
         }
 
