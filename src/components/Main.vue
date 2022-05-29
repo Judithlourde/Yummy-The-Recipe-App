@@ -301,7 +301,7 @@
     }
 
     .recipe-container h3 {
-        padding: var(--padding-small) 0;
+        padding: var(--padding-medium);
     }
 
     .introVisible {
