@@ -1,21 +1,21 @@
 <template>
-    <main class="main">
+    <main role="main" class="main">
         <div class="background-image-container">
             <div class="background-image-container__search">
-                <button @click="fetchMenu(); toggleIntro();">
+                <button aria-label="search" @click="fetchMenu(); toggleIntro();">
                     <img src="/images/svg/search.svg" alt="search-icon">
                 </button>
 
-                <input class="" type="text" placeholder="Search by main ingredient or just enter for random recipes" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">   
+                <input type="text" placeholder="Search by main ingredient or just enter for random recipes" v-model="mainIngredient" @keyup.enter="fetchMenu(); toggleIntro();">   
             </div> 
         </div>
         
         <div class="recipe-container"> 
             <div class="recipe-container__intro" :class="{introVisible: !isIntroVisible}">
-                <h3>Dinner Ideas.....</h3>
-                <p>Busy week? </p>
-                <p>Yummy <span> by Mummy </span> can help!</p>
-                <p>You can search by the main ingredient for examples Salmon, Chicken, Flour, Tomato etc... and pick for delicious meal - including recipes with ingredience.</p>
+                <h1>Dinner Ideas.....</h1>
+                <h3>Busy week? </h3>
+                <h3>Yummy <span> by Mummy </span> can help!</h3>
+                <p>You can search by the main ingredient for examples Salmon, Chicken, Flour, Tomato, egg, milk etc... and pick for delicious meal - including recipes with ingredience.</p>
                 <span>Cooking is an art, food gratifies the audience when we cook with a secret ingredient called “Love”.</span>    
             </div>
 
@@ -27,7 +27,7 @@
                 <!-- Looping the menus array and sending the object by props to the child component (Menu) -->
                 <!-- And getting the recipe instruction from Menu component by emit -->
                 <Menu
-                    v-for="menu in menus"
+                    v-for="menu in menus"           
                     :menu="menu"
                     :key="menu.id"
                     
@@ -43,7 +43,7 @@
 
                     <h4>{{ recipeInstruction.strMeal }}</h4>
 
-                    <button @click="toggleRecipe">
+                    <button aria-label="close"  @click="toggleRecipe">
                         <img src="/images/svg/close.svg" alt="close-icon">
                     </button>
                 </div>
@@ -79,7 +79,7 @@
                 </div>
 
                 <p>{{ recipeInstruction.strInstructions }}</p>
-                <a :href="recipeInstruction.strYoutube">Youtube Link</a>
+                <a aria-label="youtube link" :href="recipeInstruction.strYoutube">Youtube Link</a>
             </div>
             
         </div>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import Menu from '../components/Menu.vue'
+    import Menu from '../components/Menu.vue'
     export default {
         components: {
             Menu,
@@ -132,6 +132,7 @@ import Menu from '../components/Menu.vue'
                     if(this.menus === null) {   
                         this.message = `We don't have ${this.mainIngredient} in our meal. But you can find many other recepies by main ingredient. Such as Salmon, Chicken, Egg, Onion, Tomato, Flour...`;
                     }
+
                     // Setting the meal id to variable, it helps to fetch the ingredients and instructions from the other URL
                     this.mealId = meals[0].idMeal;  
                     // this.fetchMeal();
@@ -188,6 +189,7 @@ import Menu from '../components/Menu.vue'
     }
 
     .background-image-container {
+        width: 100%;
         height: 100%;
         position: relative;
         background-image: url('/images/fish_curry.jpg');
@@ -225,6 +227,7 @@ import Menu from '../components/Menu.vue'
         display: none;
         position: absolute;
         transition: all .3s cubic-bezier(.23,1,.32,1); 
+
     }
 
     .recipe-container__instructions a {
@@ -234,8 +237,7 @@ import Menu from '../components/Menu.vue'
     .recipe-container__recipes {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin: 10px;
+        gap: var(--gap-xsmall);
     }
 
     .recipe-container__suggestion {
@@ -247,7 +249,7 @@ import Menu from '../components/Menu.vue'
         display: block;
         position: fixed;
         top: 60px; 
-        bottom: 50px;
+        bottom: 20px;
         right: 0;
         overflow: scroll;
         line-height: 1.7;
@@ -285,15 +287,17 @@ import Menu from '../components/Menu.vue'
     }
 
     .recipe-container__intro {
-        line-height: 1.7;
+        line-height: 1.5;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding-bottom: var(--padding-small);   
     }
 
     .recipe-container__intro span {
         font-style: italic;
+        font-weight: 800;
     }
 
     .recipe-container h3 {
@@ -325,7 +329,7 @@ import Menu from '../components/Menu.vue'
         }
         
         .recipe-container {
-            margin: 20px;
+            margin: var(--margin-small);
             overflow: scroll;
             grid-column: 7/ span 6;  
         }
@@ -340,6 +344,7 @@ import Menu from '../components/Menu.vue'
         .recipe-container__intro {
             width: 580px;
             line-height: 2;
+            height: 80vh;
         }
     }
 </style>
