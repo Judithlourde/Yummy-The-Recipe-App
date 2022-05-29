@@ -38,5 +38,6 @@
 
 	/* grid */
 	--grid-column-12: repeat(12, 1fr);
+	--gap-xsmall: 10px;
 }
 
