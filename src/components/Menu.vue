@@ -3,7 +3,7 @@
         <h5>{{ menu.error }}</h5>
         <h3>{{ menu.strMeal }}</h3>
         <img :src="menu.strMealThumb" alt="menu-image">
-        <button @click="fetchMeal(); emitToggleRecipe(); emitRecipeIntro();" class="menu__recipe-button">Get Recipe</button>
+        <button aria-label="search recipe" @click="fetchMeal(); emitToggleRecipe(); emitRecipeIntro();" class="menu__recipe-button">Get Recipe</button>
     </div>
 </template>
 
