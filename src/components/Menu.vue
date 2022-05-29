@@ -78,8 +78,7 @@ export default {
 <style>
     .menu {
         position: relative;
-        /* top: 10px; */
-        bottom: 40px;
+        bottom: var(--bottom-medium);
     }
 
     .menu button {
@@ -87,7 +86,7 @@ export default {
         top: 75%;
         left: 25%;
         display: flex;
-        padding: 10px;
+        padding: var(--padding-small);
         border-radius: 20px;
         align-content: center;
         background-color: var(--header);
