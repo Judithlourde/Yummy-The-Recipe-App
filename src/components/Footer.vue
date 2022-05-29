@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer">
+    <footer role="footer" class="footer">
         <div class="footer__logo">
             <img src="/images/svg/logo.svg" alt="logo-icon">
         </div>

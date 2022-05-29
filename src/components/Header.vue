@@ -1,5 +1,5 @@
 <template>
-    <header class="header">
+    <header role="header" class="header">
         <div class="header__logo">
             <img src="/images/svg/logo.svg" alt="logo-yummy">
         </div>
@@ -24,13 +24,5 @@
         box-shadow: 0 0 5px 0;
         background-color: var(--header);
         padding: 0 var(--padding-small) 0 var(--padding-small);
-    }
-
-    .header__logo {
-    
-    }
-
-    .header__logo img {
-        /* width: 120px; */
     }
 </style>
